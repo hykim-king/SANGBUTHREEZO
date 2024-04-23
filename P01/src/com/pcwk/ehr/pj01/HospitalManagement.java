@@ -205,20 +205,68 @@ public class HospitalManagement<T> implements PLog{
 	//환자 위험도 평가
 	//정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
+	      
 		int bpm;
-		int bloodSugar;
-		//Iterator<T> iterator =this.patients.iterator();
-		//while(iterator.hasNext()) {
-			/* Patient p =iterator.next();
-			 * p.Vitalinfo.get();
-			 * 환자의 바이탈이 정상 범위를 벗어나면 그 정도에 따라 
-			 * status를 Safe,Dangerous,very_Dangerous로 설정해줌
-			 * status 가 Dangerous 와 very_Dangerous 일경우에는 isNotified 를 false 로 변경해준다.
-			*/
-		//}
-		return 0;
-		
+               int sbp;
+	       int bdp;
+               int bloodSugar;
+
+       Iterator<T> iterator =this.patients.iterator();
+       while(iterator.hasNext()) {
+       
+	Patient patient = (Patient) iterator.next();
+        List<VitalInfo> vitalInfos = Patient.getVitalInfo();
+
+        //마지막으로 기록될 바이탈 정보를 가져옴(최근)
+        VitalInfo latestVitalInfo = vitalInfos.get(vitalInfos.size()-1);
+
+        //환자의 상태를 저장할 변수
+        String status = "Safe";
+
+       // 모든 수치가 위험한 경우
+	if(latestVitalInfo.getBpm() > 100 && latestVitalInfo.getBloodSugar() > 150 &&
+	latestVitalInfo.getSbp() > 140 && latestVitalInfo.getDbp() >90) {
+	status = "All_Very_Dangreous";
+	patient.setIsNotified(false);
+	}else if(latestVitalInfo.getBpm() > 80 || latestVitalInfo.getBloodSugar() > 120 ||
+	latestVitalInfo.getSbp() > 140 || latestVitalInfo.getDbp() > 90) {
+	status = "One_or_More_Dangerous"; // VitalSign 중 하나라도 위험 범위에 속할시(조기에 발견)
+	patient.setIsNotified(false);
 	}
+
+	//환자 바이탈 정보에 따라 상태 평가(수치에 따라 Very_dangrous, Dangerous, Safe 로 구분)
+	if(latestVitalInfo.getBpm() > 100 || latestVitalInfo.getBloodSugar() > 150) {
+	status = "Very_dangrous";
+	patient.setIsNotified(false);
+	}else if(latestVitalInfo.getBpm() > 80 || latestVitalInfo.getBloodSugar() > 120) {
+	status = "Dangerous";
+	patient.setIsNotified(false);
+	}else if(latestVitalInfo.getSbp() > 140 || latestVitalInfo.getDbp() > 90) {
+	status = "High_blood_Pressure";
+	}else {
+	status = "Safe";
+	}
+
+	/* Patient p =iterator.next();
+	* p.Vitalinfo.get();
+	* 환자의 바이탈이 정상 범위를 벗어나면 그 정도에 따라
+	* status를 Safe,Dangerous,very_Dangerous로 설정해줌
+	* status 가 Dangerous 와 very_Dangerous 일경우에는 isNotified 를 false 로 변경해준다.
+	*/
+	// 환자 상태 설정
+
+	// 환자 상태 설정 후, 위험한 상태일 경우시 알림 여부 설정
+	patient.setStatus(status);
+	if(!status.equals("Safe")) {
+	Patient.setIsNotified(false);
+	}
+
+	}
+	// 정상적으로 종료 되었을시 0을 리턴
+	return 0;
+
+}
+
 	
 	
 	
