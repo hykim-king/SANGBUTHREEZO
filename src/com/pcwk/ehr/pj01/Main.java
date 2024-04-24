@@ -23,6 +23,7 @@ public class Main implements PLog{
 	public static void main(String[] args) {
 		//git add, commit, push : 20224-04-24
 		//2 git add, commit, push
+		//commit
 		String answer="";
 		boolean inOperation =true;
 		HospitalManagement<Patient> hospital = new HospitalManagement<Patient>("myHospital");
