@@ -24,6 +24,7 @@ public class Main implements PLog{
 		//git add, commit, push : 20224-04-24
 		//2 git add, commit, push
 		//commit again
+		//sdfsdf
 		
 		String answer="";
 		boolean inOperation =true;
