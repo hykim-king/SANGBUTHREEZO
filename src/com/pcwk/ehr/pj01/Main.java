@@ -21,7 +21,7 @@ public class Main implements PLog{
 	}
 	
 	public static void main(String[] args) {
-		
+		//git add, commit, push : 20224-04-24
 		
 		String answer="";
 		boolean inOperation =true;
