@@ -24,6 +24,7 @@ public class Main implements PLog{
 		//git add, commit, push : 20224-04-24
 		//2 git add, commit, push
 		//commit again
+		
 		String answer="";
 		boolean inOperation =true;
 		HospitalManagement<Patient> hospital = new HospitalManagement<Patient>("myHospital");
@@ -41,6 +42,8 @@ public class Main implements PLog{
 		hospital.patients.add(patient02);
 		hospital.patients.get(0).vitalinfo.add(vitalinfo01);
 		hospital.patients.get(1).vitalinfo.add(vitalinfo02);
+		hospital.patients.get(0).vitalinfo.add(vitalinfo02);
+		hospital.patients.get(1).vitalinfo.add(vitalinfo01);
 		VitalThread th =new VitalThread(hospital);
 		th.start();
 		thState=1;
