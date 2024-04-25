@@ -475,6 +475,41 @@ public class HospitalManagement<T> implements PLog {
 	
 	//환자의 바이탈 정보를 시간별로 보고
 	public void patientVitalReport() {
+		Scanner scanner = new Scanner(System.in);
+		if (patients.isEmpty()) {
+			System.out.println("환자 정보가 없습니다.");
+	        System.out.println("계속하려면 아무 키나 입력하세요...");
+	        scanner.nextLine(); // 사용자 입력 대기
+			return;
+		}        
+	    System.out.print("검색할 환자의 이름을 입력하세요 (cancel 입력 시 메인 메뉴로 돌아갑니다): ");
+	    String searchName = scanner.nextLine();
+	
+	    if (searchName.equalsIgnoreCase("cancel")) {
+	        return; // 메인 메뉴로 돌아감
+	    }
+	
+	    boolean found = false;
+	
+	    for (Patient patient : (List<Patient>) patients) {
+	        if (((Patient) patient).getName().equalsIgnoreCase(searchName)) {
+	            for(VitalInfo info : patient.vitalinfo) {
+	            	System.out.println(info);
+		            found = true;
+		            break; // 환자를 찾았으므로 반복문을 종료
+	            }
+
+	        }
+	    }
+	
+	    if (!found) {
+	        System.out.println("일치하는 환자 정보가 없습니다.\n계속하려면 아무키나 입력하세요");
+	        scanner.nextLine(); // 사용자 입력 대기
+	    } else {
+	        // 사용자가 아무 키나 입력할 때까지 기다림
+	        System.out.println("계속하려면 아무 키나 입력하세요...");
+	        scanner.nextLine(); // 사용자 입력 대기
+	    }
 		
 	}
 	
