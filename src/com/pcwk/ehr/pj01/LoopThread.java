@@ -39,7 +39,7 @@ public class LoopThread extends Thread implements PLog {
 			LocalTime now = LocalTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm");
             
-			if (now.format(formatter).equals("00")) {
+			if (now.format(formatter).equals("42")) {
 				try {
 					th = new VitalThread(hospital);
 					th.start();

@@ -20,25 +20,17 @@ public class VitalThread extends Thread implements PLog {
 
 		@Override
 		public void run() {
-			        LOG.info("바이탈쓰레드 실행");
-					String[] minute = {"0","5","10","30"};
 					String msg ="바이탈 체크를 진행해야합니다 몇분후 진행하시겠습니까( 0 : 즉시)";
 					
 					try{
-						int delay;
+						String delay;
+						System.out.println("\n"+msg);
+						Scanner scanner = new Scanner(System.in);
 						try{
-							String input=(String)JOptionPane.showInputDialog(null,msg,"바이탈체크",0,null,minute,minute[0]);
-							if(input==null) {
-								delay =0;
-							}else {
-								delay = Integer.parseInt(input);
-							}
-							if(delay!=0) {
-								sleep(delay*1000*60);
-							}
-						
+							delay=scanner.nextLine();
+							sleep(Integer.parseInt(delay)*1000*50);
 						}catch(Exception e) {
-							LOG.debug("JOptionPane");
+							LOG.debug("숫자를 입력하세요");
 						}
 						
 						System.out.println("\n바이탈 체크를 시작합니다.");

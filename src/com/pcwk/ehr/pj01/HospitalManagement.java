@@ -97,8 +97,6 @@ public class HospitalManagement<T> implements PLog {
 	 */
 	public void initHospital() {
 		this.patients=(List<T>) getAllPatients();
-		evaluatePatientStatus();
-
 	}
 
 	// 1. 환자 등록 시작
@@ -331,7 +329,6 @@ public class HospitalManagement<T> implements PLog {
 			 * 
 			 */
 		}
-		scanner.close();
 		System.out.println("바이탈 체크를 완료하였습니다.\n\n");
 		return 0;
 	}
