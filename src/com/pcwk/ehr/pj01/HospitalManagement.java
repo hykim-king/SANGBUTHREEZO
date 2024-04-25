@@ -203,7 +203,7 @@ public class HospitalManagement<T> implements PLog {
 				patient.setIsNotified(true);
 			}
 			// Dangerous
-			else if (bpm > 100 || bloodSugar > 150 || sbp > 140 || dbp > 90) {
+			else if (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
 				status =PatientStatus.Very_Dangerous;
 				patient.setIsNotified(false);
 			}
