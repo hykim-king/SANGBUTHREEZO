@@ -130,7 +130,7 @@ public class Patient {
 	public String toString() {
 		return "환자 정보 [이름=" + name + ", 성별=" + gender + ", 혈액형=" + bloodType + ", 생년월일=" + birthDay
 				+ ", 신장(cm)=" + height + ", 체중(Kg)=" + weight + ", 입원일 =" + registerdDate + ", 보고 여부="
-				+ isNotified + ", 건강 상태=" + status + ", 최근 심박수 =" + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +", 최근 혈당="+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +", 최근 수축기혈압"+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + "최근 이완기 혈압" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + "]";
+				+ isNotified + ", 건강 상태=" + status + ", 최근 심박수 =" + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +", 최근 혈당="+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +", 최근 수축기혈압="+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + ", 최근 이완기 혈압=" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + "]";
 	}
 
 	//환자를 등록할때 필수정보들은 다음과 같다.(Vital은 등록할때 받지 않아도 된다.)
@@ -162,7 +162,7 @@ public class Patient {
 	
     public String toJson() {
         return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"bloodType\":\"" + bloodType + "\",\"birthday\":" + birthDay +
-                ",\"height\":" + height + ",\"weight\":" + weight + ",\"registerdDate\":\"" + registerdDate + ",\" recentBpm\":"  + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +"\"recentBloodsugar\":"+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +"\", recentSbp\""+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + "recentDbp\"" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + "]\"}";
+                ",\"height\":" + height + ",\"weight\":" + weight + ",\"registerdDate\":\"" + registerdDate + ",\"recentBpm\":"  + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +",\"recentBloodsugar\":"+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +",\"recentSbp\":"+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + ",\"recentDbp\":" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + ",\"}";
     }	
 	
 	public static Patient fromJson(String json) {

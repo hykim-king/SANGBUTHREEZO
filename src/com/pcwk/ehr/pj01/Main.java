@@ -14,10 +14,9 @@ public class Main implements PLog{
 		hospital.initHospital();
 		System.out.println(hospital.hospitalName+" 환자 관리를 시작합니다.");
 		LoopThread loop = new LoopThread(hospital);
-		//VitalThread th =new VitalThread(hospital);
 		
 
-
+        /*
 		//테스트용코드
 		Patient patient01=new Patient("이성연", "남성", "O", 19881003, 183, 100);
 		Patient patient02=new Patient("김성연", "여성", "A", 19881003, 163, 60);
@@ -40,9 +39,8 @@ public class Main implements PLog{
 		hospital.patients.get(2).status=PatientStatus.Safe;
 		hospital.patients.get(3).status=PatientStatus.Very_Dangerous;
 		hospital.patients.get(3).setIsNotified(false);
+		*/
 		
-		
-		//th.start();
 		loop.start();
 		try {
 			loop.join();
@@ -51,10 +49,7 @@ public class Main implements PLog{
 			e.printStackTrace();
 		}
 		
-		
 		LOG.debug("프로그램 종료");
-		hospital.saveWholeFile();
-
 		
 	}
 

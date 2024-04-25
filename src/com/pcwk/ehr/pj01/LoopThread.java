@@ -20,7 +20,7 @@ public class LoopThread extends Thread implements PLog {
 		System.out.println("\n───────────────────────────────────────────");
 		System.out.println("메뉴를 선택하세요.(0번 입력시 프로그램 종료)");
 		System.out.println("1.환자 등록, 2.환자 정보 변경, 3.환자 삭제, 4.환자명단 확인, ");
-		System.out.println("5.개별 환자정보 조회, 6.개별 환자 바이탈 이력 조회, 7.입원 환자 상태 보고서");
+		System.out.println("5.개별 환자정보 조회, 6.개별 환자 바이탈 이력 조회, 7.입원 환자 상태 보고서, 8.환자 위험도 평가 실행");
 		System.out.println("───────────────────────────────────────────");
 		System.out.print("입력:");
 	}
@@ -95,12 +95,12 @@ public class LoopThread extends Thread implements PLog {
 
 				case "0":
 					LOG.debug("0이 입력되었습니다.");
+					LOG.debug("프로그램 종료");
 					inOperation = false;
 					// 프로그램이 종료되기 전에 JSON 파일에 환자 정보 저장
                     hospital.savePatientListToJson(hospital.patients);
                     System.exit(0);
 				default:
-					System.out.println("잘못된 선택입니다. 0 ~ 8의 숫자를 입력해주세요.");
 				}
 			}else {
 				continue;

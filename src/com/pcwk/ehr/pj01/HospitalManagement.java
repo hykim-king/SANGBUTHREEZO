@@ -21,6 +21,7 @@ import com.pcwk.ehr.cmn.PLog;
 public class HospitalManagement<T> implements PLog {
     	public static final int MAX_FILES = 20;
     	public static final String FILE_DIRECTORY = "patient_files/";
+    	public static final String VITAL_FILE_DIRECTORY =FILE_DIRECTORY +"VITALS/";
     	public static final String JSON_FILE = FILE_DIRECTORY + "patients.json";	
 	
 	// 환자 객체들을 저장하는 리스트
@@ -79,44 +80,8 @@ public class HospitalManagement<T> implements PLog {
 	 * 
 	 * try catch 문으로 처리. LOG.debug(e.getMessage)를 통해 문제를 기록하도록함.
 	 */
-	public int saveWholeFile() {
+	
 
-		Iterator<T> iterator = this.patients.iterator();
-		while (iterator.hasNext()) {
-			saveInfoFile(iterator.next());
-			Iterator<VitalInfo> viterator = (Iterator<VitalInfo>) iterator;
-
-			/*
-			 * 순서대로 모든 환자를 순회하며 정보중 vital 정보 만을 입력 받아 환자의 vital에 정보를 입력 등록할때 생성된
-			 * "환자이름+등록날짜.txt"로 파일 이름을 정해서 저장한다. 저장은 saveInfofile 메소드를 통해 구현한다.
-			 * 
-			 */
-		}
-		return 0;
-
-	}
-
-	public int saveInfoFile(T patient) {
-		return 0;
-
-	}
-
-	public int saveVitalInfoFile(T patient, VitalInfo vitalinfo) {
-		return 0;
-	}
-
-	public int deleteInfo(T patient) {
-		return 0;
-	}
-
-	public int deleteInfoFile(String path) {
-		return 0;
-	}
-
-	public T readInfoFile(String path) {
-		T patient = null;
-		return patient;
-	}
 
 	public VitalInfo readVitalInfoFile(String path) {
 		VitalInfo info = null;
@@ -130,17 +95,9 @@ public class HospitalManagement<T> implements PLog {
 	/*
 	 * 경로에 저장된 모든 파일들을 읽어서 환자 객체를 생성해서 list에 추가한다.
 	 */
-	public int initHospital() {
-		// 경로에 있는 모든 파일에 접근해서 정보를 읽은후 리스트에 추가
-		/*
-		 * patients.add(readInfoFile(""));
-		 * 
-		 * for (int i =0;i<patients.size();i++) { Patient p =(Patient) patients.get(i);
-		 * p.getVitalinfo().add(readVitalInfoFile("")); }
-		 * 
-		 */
-
-		return 0;
+	public void initHospital() {
+		this.patients=(List<T>) getAllPatients();
+		evaluatePatientStatus();
 
 	}
 
