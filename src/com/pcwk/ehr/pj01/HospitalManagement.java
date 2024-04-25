@@ -200,10 +200,11 @@ public class HospitalManagement<T> implements PLog {
 			// Safe
 			if (bpm <= 80 && bloodSugar <= 120 && sbp <= 140 && dbp <= 90) {
 				status = PatientStatus.Safe;
+				patient.setIsNotified(true);
 			}
 			// Dangerous
-			else if (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
-				status =PatientStatus.Dangerous;
+			else if (bpm > 100 || bloodSugar > 150 || sbp > 140 || dbp > 90) {
+				status =PatientStatus.Very_Dangerous;
 				patient.setIsNotified(false);
 			}
 			// Very_Dangerous\
@@ -213,22 +214,15 @@ public class HospitalManagement<T> implements PLog {
 					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 2)) {
 				status = PatientStatus.Very_Dangerous;
 				patient.setIsNotified(false);
-			}
-
-			else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
+			}else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
 				status =PatientStatus.Dangerous;
 				patient.setIsNotified(false);
-			}
-
-			else {
+			}else {
 				status =PatientStatus.Dangerous;
 				patient.setIsNotified(false);
-
-				patient.setStatus(status);
-				if (status!=PatientStatus.Safe) {
-					patient.setIsNotified(false);
-				}
+				
 			}
+			patient.setStatus(status);
 			if(!patient.isNotified()) {
 				notifyToDoctor(patient);
 			}
@@ -248,14 +242,13 @@ public class HospitalManagement<T> implements PLog {
 
 	public void notifyToDoctor(Patient p) {
 		
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("의사를 호출 하시겠습니까? (Y/N)");
-		String decision = scanner.nextLine().trim().toUpperCase();
+		Scanner scan = new Scanner(System.in);
+		System.out.println(p.getName()+"환자의 상태가"+p.getStatus().toString()+"입니다. 의사를 호출 하시겠습니까? (Y/N)");
+		String decision = scan.nextLine().trim().toUpperCase();
 		if(decision.equals("Y")) {
 			p.setIsNotified(true);
 			System.out.println("의사에게 알림을 보냈습니다.");
 		}
-		scanner.close();
 	}
     
 	
