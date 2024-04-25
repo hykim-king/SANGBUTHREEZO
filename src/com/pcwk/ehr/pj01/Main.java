@@ -19,10 +19,10 @@ public class Main implements PLog{
 
 
 		//테스트용코드
-		Patient patient01=new Patient("이성연", "남성", "O", "19881003", 183, 100);
-		Patient patient02=new Patient("김성연", "여성", "A", "19881003", 163, 60);
-		Patient patient03=new Patient("박성연", "여성", "B", "19881003", 163, 60);
-		Patient patient04=new Patient("장성연", "여성", "B", "19881003", 163, 60);
+		Patient patient01=new Patient("이성연", "남성", "O", 19881003, 183, 100);
+		Patient patient02=new Patient("김성연", "여성", "A", 19881003, 163, 60);
+		Patient patient03=new Patient("박성연", "여성", "B", 19881003, 163, 60);
+		Patient patient04=new Patient("장성연", "여성", "B", 19881003, 163, 60);
 		VitalInfo vitalinfo01= new VitalInfo(80, 80, 120, 120);
 		VitalInfo vitalinfo02= new VitalInfo(60, 100, 180, 220);
 		VitalInfo vitalinfo03= new VitalInfo(90, 150, 230, 120);
