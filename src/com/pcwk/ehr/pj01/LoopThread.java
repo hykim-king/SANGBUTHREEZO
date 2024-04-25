@@ -96,11 +96,11 @@ public class LoopThread extends Thread implements PLog {
 				case "0":
 					LOG.debug("0이 입력되었습니다.");
 					inOperation = false;
-					this.interrupt();
-					th.interrupt();
-					break;
+					// 프로그램이 종료되기 전에 JSON 파일에 환자 정보 저장
+                    hospital.savePatientListToJson(hospital.patients);
+                    System.exit(0);
 				default:
-
+					System.out.println("잘못된 선택입니다. 0 ~ 8의 숫자를 입력해주세요.");
 				}
 			}else {
 				continue;
