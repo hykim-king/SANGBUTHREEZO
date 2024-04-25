@@ -21,26 +21,20 @@ public class Patient {
 		return vitalinfo;
 	}
 
-
 	public void setVitalinfo(ArrayList<VitalInfo> vitalinfo) {
 		this.vitalinfo = vitalinfo;
 	}
 
 	//환자의 바이탈 인포를 담는 리스트
 	public ArrayList<VitalInfo> vitalinfo=new ArrayList<VitalInfo>();
-	
-	
-
 
 	public void setRegisterdDate(String registerdDate) {
 		this.registerdDate = registerdDate;
 	}
-
-
+	
 	Patient(){
 		super();
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,8 +51,6 @@ public class Patient {
 		}
 	}
 	
-	
-
 	public String getName() {
 		return name;
 	}
