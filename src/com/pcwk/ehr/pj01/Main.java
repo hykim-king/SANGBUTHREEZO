@@ -54,6 +54,6 @@ public class Main implements PLog{
 		
 		LOG.debug("프로그램 종료");
 		
-	}
+	} // main
 
-}
+} // class
