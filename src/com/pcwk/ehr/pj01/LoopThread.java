@@ -69,47 +69,48 @@ public class LoopThread extends Thread implements PLog {
 				switch (answer) {
 
 				case "1":
-					hospital.registerPatient();
+					hospital.registerPatient(); // 1. 환자 등록
 					break;
 				case "2":
-					hospital.modifyPatient();
+					hospital.modifyPatient(); // 2. 환자 정보 변경
 					break;
 				case "3":
-					hospital.deletePatient();
+					hospital.deletePatient(); // 3. 환자 삭제
 					break;
 				case "4":
-					hospital.patientList();
+					hospital.patientList(); // 4. 환자 명단 확인
 					break;
 				case "5":
-					hospital.patientReport();
+					hospital.patientReport(); // 5. 개별 환자 정보 조회
 					break;
 				case "6":
-					hospital.patientVitalReport();
+					hospital.patientVitalReport(); // 6. 개별 환자 바이탈 이력 조회
 					break;
 				case "7":
-					hospital.hospitalReport();
+					hospital.hospitalReport(); // 7. 입원 환자 상태 보고서
 					break;
 				case "8":
-					hospital.evaluatePatientStatus();
+					hospital.evaluatePatientStatus(); // 8. 환자 위험도 평가 실행
 					break;
 				case "9":
-					hospital.vitalCheck();
+					hospital.vitalCheck(); // 9. 바이탈 체크
 					break;
 				case "0":
 					LOG.debug("0이 입력되었습니다.");
 					LOG.debug("프로그램 종료");
 					inOperation = false;
 					// 프로그램이 종료되기 전에 JSON 파일에 환자 정보 저장
-                    HospitalManagement.savePatientListToJson(hospital.patients);
-                    HospitalManagement.saveVitalListToJson(hospital.patients);
-                    System.exit(0);
+				 HospitalManagement.savePatientListToJson(hospital.patients);
+				 HospitalManagement.saveVitalListToJson(hospital.patients);
+				 System.exit(0);
 				default:
+					System.out.println("잘못된 선택입니다. 0 ~ 9의 숫자를 입력해주세요.");
 				}
 			}else {
 				continue;
 			}
-		}
+		} // while
 
-	}
+	} // run
 
-}
+} // class
