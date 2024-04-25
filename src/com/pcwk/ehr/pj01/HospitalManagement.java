@@ -21,7 +21,7 @@ import com.pcwk.ehr.cmn.PLog;
 public class HospitalManagement<T> implements PLog {
     	public static final int MAX_FILES = 20;
     	public static final String FILE_DIRECTORY = "patient_files/";
-    	public static final String VITAL_FILE_DIRECTORY =FILE_DIRECTORY +"VITALS/";
+    	public static final String VITAL_FILE_DIRECTORY ="VITALS/";
     	public static final String JSON_FILE = FILE_DIRECTORY + "patients.json";	
 	
 	// 환자 객체들을 저장하는 리스트
@@ -45,6 +45,12 @@ public class HospitalManagement<T> implements PLog {
 	    if (!directory.exists()) {
 	        directory.mkdirs();
 	    }
+	    
+	    this.directory = new File(VITAL_FILE_DIRECTORY);
+	    if (!directory.exists()) {
+	        directory.mkdirs();
+	    }
+	    
 	    // JSON 파일이 없으면 생성합니다
 	    this.jsonFile = new File(JSON_FILE);
 	    if (!jsonFile.exists()) {
@@ -74,6 +80,9 @@ public class HospitalManagement<T> implements PLog {
         return patients;
     } // 환자 정보 불러오기
 	
+    
+    
+    
 	/*
 	 * 환자의 정보를 환자 "이름+등록일.txt" 파일로 기록. 정상적으로 저장 읽었을경우 0 리턴, 문제가생겼을경우 -1 리턴(Exception
 	 * 이 발생했을경우)
@@ -97,6 +106,12 @@ public class HospitalManagement<T> implements PLog {
 	 */
 	public void initHospital() {
 		this.patients=(List<T>) getAllPatients();
+
+	}
+	
+	public ArrayList<VitalInfo> getAllVitals(Patient patient) {
+		return patient.vitalinfo;
+		
 	}
 
 	// 1. 환자 등록 시작
@@ -447,10 +462,9 @@ public class HospitalManagement<T> implements PLog {
 	
 	    for (Patient patient : (List<Patient>) patients) {
 	        if (((Patient) patient).getName().equalsIgnoreCase(searchName)) {
+	        		found=true;
 	            for(VitalInfo info : patient.vitalinfo) {
 	            	System.out.println(info);
-		            found = true;
-		            break; // 환자를 찾았으므로 반복문을 종료
 	            }
 
 	        }
@@ -608,6 +622,19 @@ public class HospitalManagement<T> implements PLog {
 	} // hospitalReport 끝
 	
     public static void savePatientListToJson(List<Patient> patientList) {
+    	File jsonFile = new File(JSON_FILE);
+    	
+    	if (jsonFile.exists()) {
+    		jsonFile.delete();
+ 	    }
+    	/*
+    	try {
+			jsonFile.createNewFile();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	*/ 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(JSON_FILE))) {
             for (Patient patient : patientList) {
                 writer.write(patient.toJson());
@@ -617,5 +644,34 @@ public class HospitalManagement<T> implements PLog {
             e.printStackTrace();
         }
     } // 환자 정보 JSON에 저장	
-	
+    
+    
+    public static void saveVitalListToJson(List<Patient> patientList) {
+    	
+    	for(Patient p : patientList) {
+    		String path = VITAL_FILE_DIRECTORY+p.getName()+".json";
+    		
+    		File json = new File(path);
+    	    if (!json.exists()) {
+    	        try {
+    	            json.createNewFile();
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+    	    }else {
+    	    	json.deleteOnExit();
+    	    }
+    	    
+    		try(BufferedWriter writer = new BufferedWriter(new FileWriter(path))){
+    			for (VitalInfo info :p.vitalinfo) {
+    				writer.write(info.vitalToJson());
+    				writer.newLine();
+    			}
+    		}catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+        
+    } // 환자 바이탈 정보들 JSON에 저장	
+
 } // class

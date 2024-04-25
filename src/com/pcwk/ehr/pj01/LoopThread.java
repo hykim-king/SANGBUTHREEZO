@@ -39,7 +39,7 @@ public class LoopThread extends Thread implements PLog {
 			LocalTime now = LocalTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm");
             
-			if (now.format(formatter).equals("42")) {
+			if (now.format(formatter).equals("00")) {
 				try {
 					th = new VitalThread(hospital);
 					th.start();
@@ -92,13 +92,16 @@ public class LoopThread extends Thread implements PLog {
 				case "8":
 					hospital.evaluatePatientStatus();
 					break;
-
+				case "9":
+					hospital.vitalCheck();
+					break;
 				case "0":
 					LOG.debug("0이 입력되었습니다.");
 					LOG.debug("프로그램 종료");
 					inOperation = false;
 					// 프로그램이 종료되기 전에 JSON 파일에 환자 정보 저장
-                    hospital.savePatientListToJson(hospital.patients);
+                    HospitalManagement.savePatientListToJson(hospital.patients);
+                    HospitalManagement.saveVitalListToJson(hospital.patients);
                     System.exit(0);
 				default:
 				}

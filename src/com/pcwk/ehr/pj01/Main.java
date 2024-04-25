@@ -31,6 +31,9 @@ public class Main implements PLog{
 		hospital.patients.add(patient03);
 		hospital.patients.add(patient04);
 		hospital.patients.get(0).vitalinfo.add(vitalinfo01);
+		hospital.patients.get(0).vitalinfo.add(vitalinfo02);
+		hospital.patients.get(0).vitalinfo.add(vitalinfo03);
+		hospital.patients.get(0).vitalinfo.add(vitalinfo04);
 		hospital.patients.get(1).vitalinfo.add(vitalinfo02);
 		hospital.patients.get(2).vitalinfo.add(vitalinfo03);
 		hospital.patients.get(3).vitalinfo.add(vitalinfo04);

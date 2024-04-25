@@ -144,7 +144,7 @@ public class Patient {
 		this.weight = weight;
 		
 		Date now = new Date();
-		SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
+		SimpleDateFormat formatter =new SimpleDateFormat("yyyyMMdd_hh-mm-ss");
 		this.registerdDate =formatter.format(now);
 	}
 
@@ -162,7 +162,9 @@ public class Patient {
 	
     public String toJson() {
         return "{\"name\":\"" + name + "\",\"gender\":\"" + gender + "\",\"bloodType\":\"" + bloodType + "\",\"birthday\":" + birthDay +
-                ",\"height\":" + height + ",\"weight\":" + weight + ",\"registerdDate\":\"" + registerdDate + ",\"recentBpm\":"  + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +",\"recentBloodsugar\":"+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +",\"recentSbp\":"+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + ",\"recentDbp\":" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + ",\"}";
+                ",\"height\":" + height + ",\"weight\":" + weight + ",\"registerdDate\":\"" + registerdDate + 
+                ",\"recentBpm\":"  + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +",\"recentBloodsugar\":"+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +
+                ",\"recentSbp\":"+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + ",\"recentDbp\":" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + ",\"}";
     }	
 	
 	public static Patient fromJson(String json) {

@@ -59,6 +59,45 @@ public class VitalInfo {
 	public void setBloodSugar(int bloodSugar) {
 		this.bloodSugar = bloodSugar;
 	}
-	
 
-}
+	public VitalInfo(int bPM, int sBP, int dBP, int bloodSugar, String checkTime) {
+		super();
+		BPM = bPM;
+		SBP = sBP;
+		DBP = dBP;
+		this.bloodSugar = bloodSugar;
+		this.checkTime = checkTime;
+	}
+    
+	@Override
+	public String toString() {
+		return "환자 생체정보 [BPM=" + BPM + ", SBP=" + SBP + ", DBP=" + DBP + ", bloodSugar=" + bloodSugar + ", checkTime="
+				+ checkTime + "]";
+	}
+	
+	public String vitalToJson() {
+        return "{\"checkTime\":\"" + checkTime + "\",\"BPM\":\"" + BPM + "\",\"SBP\":\"" + SBP + "\",\"DBP\":" + DBP +
+                ",\"bloodSugar\":" + bloodSugar + ",\"}";
+    }	
+	
+	public static VitalInfo fromJson(String json) {
+        try {
+            json = json.trim();
+            if (json.startsWith("{") && json.endsWith("}")) {
+                String[] parts = json.substring(1, json.length() - 1).split(",");
+                String checkTime = parts[0].split(":")[1].replace("\"", "").trim();
+                int BPM = Integer.parseInt(parts[1].split(":")[1].trim());
+                int SBP = Integer.parseInt(parts[2].split(":")[1].trim());
+                int DBP = Integer.parseInt(parts[3].split(":")[1].trim());
+                int BloodSugar = Integer.parseInt(parts[4].split(":")[1].trim());
+                return new VitalInfo(BPM,SBP,DBP,BloodSugar,checkTime);
+            }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
+} // class end
+
+
