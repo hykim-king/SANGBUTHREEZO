@@ -29,7 +29,7 @@ public class LoopThread extends Thread implements PLog {
 	public void run() {
 
 		CancelableScanner cancelableScanner=null;
-		CancelThread can = new CancelThread(cancelableScanner);
+		CancelThread can = null;
 		VitalThread th = null;
 
 		String answer = "";

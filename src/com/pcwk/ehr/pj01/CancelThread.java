@@ -7,8 +7,8 @@ public class CancelThread extends Thread {
      public void run() {
          try {
              // 30초동안 취소 스레드를 재운다.
-             sleep(1000*30);
-             System.out.println("입력이 없어 재시작합니다.");
+             sleep(1000*20);
+             System.out.println("\n20 초간 입력이 없어 재시작합니다.");
              // cancelableScanner 의 입력 받기를 취소함
              cancelableScanner.cancel();
          } catch (Exception e) {
