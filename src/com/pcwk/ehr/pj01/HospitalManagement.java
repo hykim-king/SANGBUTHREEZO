@@ -15,19 +15,60 @@ import com.pcwk.ehr.cmn.PLog;
  */
 
 public class HospitalManagement<T> implements PLog {
+    	public static final int MAX_FILES = 20;
+    	public static final String FILE_DIRECTORY = "patient_files/";
+    	public static final String JSON_FILE = FILE_DIRECTORY + "patients.json";	
+	
 	// 환자 객체들을 저장하는 리스트
 	List<T> patients = new ArrayList<T>();
-
+	
+	// 디렉터리 json 선언
+	File directory;
+	File jsonFile; 	
+	
 	// 병원 이름
 	String hospitalName;
 
-	// 생성자
+	// json 생성자
 	public HospitalManagement(String hospitalName) {
-		super();
-		this.hospitalName = hospitalName;
-		this.patients = new LinkedList<>();
-	}
+	    super();
+	    this.hospitalName = hospitalName;
+	    this.patients = new ArrayList<>();
+	
+	    // 디렉터리가 존재하는지 확인
+	    this.directory = new File(FILE_DIRECTORY);
+	    if (!directory.exists()) {
+	        directory.mkdirs();
+	    }
+	    // JSON 파일이 없으면 생성합니다
+	    this.jsonFile = new File(JSON_FILE);
+	    if (!jsonFile.exists()) {
+	        try {
+	            jsonFile.createNewFile();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	} // json파일 생성 확인 및 생성
 
+	// 환자 정보 불러오기
+    private static List<Patient> getAllPatients() {
+        List<Patient> patients = new ArrayList<>();
+        // 파일에서 환자 정보를 읽어와서 리스트에 추가하는 코드
+        try (BufferedReader br = new BufferedReader(new FileReader(JSON_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Patient patient = Patient.fromJson(line);
+                if (patient != null) {
+                    patients.add(patient);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return patients;
+    } // 환자 정보 불러오기
+	
 	/*
 	 * 환자의 정보를 환자 "이름+등록일.txt" 파일로 기록. 정상적으로 저장 읽었을경우 0 리턴, 문제가생겼을경우 -1 리턴(Exception
 	 * 이 발생했을경우)
@@ -99,29 +140,204 @@ public class HospitalManagement<T> implements PLog {
 
 	}
 
-	// 새로운 환자 정보를 입력,
-	public int registerPatient() {
-		T patient = null;
+	// 1. 환자 등록 시작
+	public void registerPatient() {
+		 Scanner scanner = new Scanner(System.in);
+		 if (isFileLimitReached()) {
+	            System.out.println("환자정보 보관량이 최대치입니다. 더 이상 추가하실 수 없습니다.");
+	        }
 
-		patients.add(patient);
-		// list에 환자객체를 추가한다.
-		return 0;
-	}
+	        System.out.println("환자 정보를 입력해주세요:");
+	        System.out.print("이름 : ");
+	        String name = scanner.nextLine();
+	        // 성별 입력
+	        String gender;
+	        while (true) {
+	            System.out.print("성별 (남자/여자) : ");
+	            gender = scanner.nextLine();
+	            if (gender.equals("남자") || gender.equals("여자")) {
+	                break;
+	            } else {
+	                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+	            }
+	        }
+	        // 혈액형 입력
+	        String bloodType;
+	        while (true) {
+	            System.out.print("혈액형 (A/B/O/AB) : ");
+	            bloodType = scanner.nextLine().toUpperCase();
+	            if (bloodType.equals("A") || bloodType.equals("B") || bloodType.equals("O") || bloodType.equals("AB")) {
+	                break;
+	            } else {
+	                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+	            }
+	        }
+	       
+	        // 생년월일 입력
+	        int birthday;
+	        while (true) {
+	            System.out.print("생년월일(yyyymmdd) : ");
+	            birthday = scanner.nextInt();
+	            if (isValidDate(String.valueOf(birthday))) {
+	                break;
+	            } else {
+	                System.out.println("잘못된 형식입니다. 다시 입력해주세요.");
+	            }
+	        }
+	        System.out.print("키(cm) : ");
+	        int height = scanner.nextInt();
+	        System.out.print("몸무게(kg) : ");
+	        int weight = scanner.nextInt();
+	        System.out.print("심박수 : ");
+	        int heartRate = scanner.nextInt();
+	        System.out.print("수축기혈압 : ");
+	        int sbp = scanner.nextInt();
+	        System.out.print("이완기혈압 : ");
+	        int dbp = scanner.nextInt();
+	        System.out.print("혈당 : ");
+	        int bloodSugar = scanner.nextInt();
+	        VitalInfo info = new VitalInfo(heartRate,sbp,dbp,bloodSugar);
+	        Patient newPatient = new Patient(name, gender, bloodType, birthday, height, weight);
+	        newPatient.vitalinfo.add(info);
+	        savePatientInformation((List<Patient>) patients, newPatient);
+	        System.out.println("환자 정보가 저장되었습니다.");
+	} // 1. 환자 등록 끝
 
-	// 새로운 환자 정보를 입력,
-	public void modifyPatient() {
+	// 환자정보 추가
+	   private void savePatientInformation(List<Patient> patientList, Patient patient) {
+	       patientList.add((Patient) patient); // 환자 정보를 patientList에 추가
+	   } // 환자정보 추가 완료	 
+	
+	// 환자 정보 최대치 도달
+	   private static boolean isFileLimitReached() {
+	        List<Patient> patients = getAllPatients();
+	        return patients.size() >= MAX_FILES;
+	    } // 환자 정보 최대치 도달 끝	
+	   
+	   // 생년월일 날짜 확인
+	   private static boolean isValidDate(String date) {
+	       if (date.length() != 8) {
+	           return false;
+	       }
+	       try {
+	           Integer.parseInt(date);
+	       } catch (NumberFormatException e) {
+	           return false;
+	       }
+	       int year = Integer.parseInt(date.substring(0, 4));
+	       int month = Integer.parseInt(date.substring(4, 6));
+	       int day = Integer.parseInt(date.substring(6, 8));
+	       if (month < 1 || month > 12 || day < 1 || day > 31) {
+	           return false;
+	       }
+	       return true;
+	   } // isValidDate String
+	   private static boolean isValidDate(int date) {
+	       String dateStr = String.valueOf(date);
+	       if (dateStr.length() != 8) {
+	           return false;
+	       }
+	       int year = Integer.parseInt(dateStr.substring(0, 4));
+	       int month = Integer.parseInt(dateStr.substring(4, 6));
+	       int day = Integer.parseInt(dateStr.substring(6, 8));
+	       if (month < 1 || month > 12 || day < 1 || day > 31) {
+	           return false;
+	       }
+	       return true;
+	   } // isValidDate int
+	   // 생년월일 날짜 확인 끝 
+	
+	// 2. 환자 정보 변경 시작
+		public void modifyPatient() {
+			System.out.println("수정할 환자의 이름을 입력하세요:");
+			Scanner scanner = new Scanner(System.in);
+	        String searchName = scanner.nextLine();
+	        
+	        boolean found = false;
 
-		// 환자 객체를 찾아 해당 객체의 정보를 수정합니다. "환자이름+등록날짜.txt" 또한 수정합니다.
-	}
+	        for (Patient patient : (List<Patient>) patients) {
+	            if (patient.getName().equalsIgnoreCase(searchName)) {
+	                System.out.println("환자 정보를 수정해주세요:");
+	                System.out.print("이름 : ");
+	                patient.setName(scanner.nextLine());
+	                // 성별 수정
+	                while (true) {
+	                    System.out.print("성별 (남자/여자) : ");
+	                    String gender = scanner.nextLine();
+	                    if (gender.equals("남자") || gender.equals("여자")) {
+	                        patient.setGender(gender);
+	                        break;
+	                    } else {
+	                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+	                    }
+	                }
+	             // 혈액형 입력
+	                while (true) {
+	                    System.out.print("혈액형 (A/B/O/AB) : ");
+	                    String bloodType = scanner.nextLine().toUpperCase();
+	                    if (bloodType.equals("A") || bloodType.equals("B") || bloodType.equals("O") || bloodType.equals("AB")) {
+	                    	patient.setBloodType(bloodType);
+	                        break;
+	                    } else {
+	                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+	                    }
+	                }
+	                // 생년월일 입력
+	                while (true) {
+	                    System.out.print("생년월일(yyyymmdd) : ");
+	                    int birthday = scanner.nextInt();
+	                    if (isValidDate(birthday)) {
+	                        patient.setBirthDay(birthday);
+	                        break;
+	                    } else {
+	                        System.out.println("잘못된 형식입니다. 다시 입력해주세요.");
+	                    }
+	                }          
+	                System.out.print("키(cm) : ");
+	                patient.setHeight(scanner.nextInt());
+	                System.out.print("몸무게(kg) : ");
+	                patient.setWeight(scanner.nextInt());
 
-	// 기존 환자 정보를 입력받아 리스트에서 삭제
-	public void deletePatient() {
-		T patient = null;
+	                found = true;
+	                break;
+	            }
+	        }
 
-		patients.remove(patient);
-		// 환자의 이름을 입력받아 list 에서 equals 를 이용하여 이름이 같은 환자를 찾아,"환자이름+등록날짜.txt"파일을 삭제
+	        if (!found) {
+	            System.out.println("일치하는 환자 정보가 없습니다.");
+	            System.out.println("계속하려면 아무 키나 입력하세요...");
+	            scanner.nextLine(); // 사용자 입력 대기
+	        } 
+		} // 2. 환자 정보 변경 끝
 
-	}
+	// 3. 환자 정보 삭제
+		public void deletePatient() {
+			 Scanner scanner = new Scanner(System.in);
+			 System.out.println("삭제할 환자의 이름을 입력하세요:");
+		        String searchName = scanner.nextLine();
+
+		        boolean found = false;
+
+		        // 삭제할 환자 정보를 찾아서 patientList에서 삭제
+		        for (Iterator<Patient> iterator =  (Iterator<Patient>) patients.iterator(); iterator.hasNext();) {
+		            Patient patient = iterator.next();
+		            if (patient.getName().equalsIgnoreCase(searchName)) {
+		                iterator.remove();
+		                found = true;
+		                break;
+		            }
+		        }
+
+		        if (!found) {
+		            System.out.println("일치하는 환자 정보가 없습니다.");
+		        } else {
+		            System.out.println("환자 정보가 삭제되었습니다.");
+		        }
+		        
+		        // 아무 키나 입력할 때까지 대기
+		        System.out.println("계속하려면 아무 키나 입력하세요...");
+		        scanner.nextLine(); // 사용자 입력 대기
+		} // 3. 환자 정보 삭제
 
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int vitalCheck() {
@@ -159,7 +375,7 @@ public class HospitalManagement<T> implements PLog {
 		return 0;
 	}
 
-	// 환자 목록을 출력
+	// 4. 환자 명단 확인
 	public void patientList() {
 
 		int num = 0;
@@ -179,7 +395,7 @@ public class HospitalManagement<T> implements PLog {
 		System.out.println("총 환자의 수는 " + num + "명입니다.");
 		System.out.println();
 		System.out.println();
-	}
+	} // 4. 환자 명단 확인 끝
 
 	// 환자 위험도 평가
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
@@ -260,19 +476,41 @@ public class HospitalManagement<T> implements PLog {
 	
 	
 	
-	public void patientReport() {
-
-		/*
-		 * 환자 한명의 이름을 입력받아 해당 환자를 검색, 해당 환자의 정보를 출력해준다. name;// 이름 gender;// 성별
-		 * bloodType;// 혈액형 birthDay;// 생년월일 YYYY.MM.DD height;// 키 weight;// 몸무게
-		 * registerdDate;// 등록일 isNotified; PatientStatus status;
-		 * 
-		 * //바이탈 이력을 출력할지 선택하게 한후 선택시 바이탈 정보도 시간을 포함해 같이 출력. Vital history; -리스트에 있는 바이탈
-		 * 정보들을 전부 출력
-		 * 
-		 */
-
-	}
+	// 5. 개별 환자 정보 조회
+		public void patientReport() {
+			Scanner scanner = new Scanner(System.in);
+			if (patients.isEmpty()) {
+				System.out.println("환자 정보가 없습니다.");
+		        System.out.println("계속하려면 아무 키나 입력하세요...");
+		        scanner.nextLine(); // 사용자 입력 대기
+				return;
+			}        
+		    System.out.print("검색할 환자의 이름을 입력하세요 (cancel 입력 시 메인 메뉴로 돌아갑니다): ");
+		    String searchName = scanner.nextLine();
+		
+		    if (searchName.equalsIgnoreCase("cancel")) {
+		        return; // 메인 메뉴로 돌아감
+		    }
+		
+		    boolean found = false;
+		
+		    for (Patient patient : (List<Patient>) patients) {
+		        if (((Patient) patient).getName().equalsIgnoreCase(searchName)) {
+		            System.out.println(patient);
+		            found = true;
+		            break; // 환자를 찾았으므로 반복문을 종료
+		        }
+		    }
+		
+		    if (!found) {
+		        System.out.println("일치하는 환자 정보가 없습니다.\n계속하려면 아무키나 입력하세요");
+		        scanner.nextLine(); // 사용자 입력 대기
+		    } else {
+		        // 사용자가 아무 키나 입력할 때까지 기다림
+		        System.out.println("계속하려면 아무 키나 입력하세요...");
+		        scanner.nextLine(); // 사용자 입력 대기
+		    }
+		} // 5. 개별 환자 정보 조회 끝
 
 	public void hospitalReport() {
 		/*
@@ -374,6 +612,17 @@ public class HospitalManagement<T> implements PLog {
 			}
 		}
 
-	}
-
-}
+	} // hospitalReport 끝
+	
+    public static void savePatientListToJson(List<Patient> patientList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(JSON_FILE))) {
+            for (Patient patient : patientList) {
+                writer.write(patient.toJson());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } // 환자 정보 JSON에 저장	
+	
+} // class
