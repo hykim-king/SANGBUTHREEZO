@@ -244,7 +244,13 @@ public class HospitalManagement<T> implements PLog {
 	}
 
 	public void notifyToDoctor() {
-		// 환자의 이름과 상태를 의사에게 전달한다는 메세지 출력 후 isNotified 를 true 로 변경해줌
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("의사를 호출 하시겠습니까? (Y/N)");
+		String decision = scanner.nextLine().trim().toUpperCase();
+		if(decision.equals("Y")) {
+			notifyToDoctor();
+		}
+		System.out.println("의사에게 알림을 보냈습니다.");
 	}
     
 	
