@@ -12,6 +12,10 @@ public class VitalInfo {
 	
 	
 	
+	public VitalInfo() {
+		super();
+	}
+
 	public String getCheckTime() {
 		return checkTime;
 	}

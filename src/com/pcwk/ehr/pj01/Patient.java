@@ -176,7 +176,7 @@ public class Patient {
                 int height = Integer.parseInt(parts[4].split(":")[1].trim());
                 int weight = Integer.parseInt(parts[5].split(":")[1].trim());
                 String registerDate =parts[6].split(":")[1].replace("\"", "").trim();
-                VitalInfo info=null;
+                VitalInfo info=new VitalInfo();
                 info.setBpm(Integer.parseInt(parts[7].split(":")[1].trim()));
                 info.setBloodSugar(Integer.parseInt(parts[8].split(":")[1].trim()));
                 info.setSbp(Integer.parseInt(parts[9].split(":")[1].trim()));
