@@ -210,20 +210,66 @@ public class HospitalManagement<T> implements PLog{
 	//환자 위험도 평가
 	//정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
-		int bpm;
-		int bloodSugar;
-		//Iterator<T> iterator =this.patients.iterator();
-		//while(iterator.hasNext()) {
-			/* Patient p =iterator.next();
-			 * p.Vitalinfo.get();
-			 * 환자의 바이탈이 정상 범위를 벗어나면 그 정도에 따라 
-			 * status를 Safe,Dangerous,very_Dangerous로 설정해줌
-			 * status 가 Dangerous 와 very_Dangerous 일경우에는 isNotified 를 false 로 변경해준다.
-			*/
-		//}
-		return 0;
+		Iterator<Patient> iterator =this.patients.iterator();
+		while(iterator.hasNext()) {
+			Patient patient = (Patient) iterator.next();
+		List<VitalInfo> vitalInfos = Patient.getVitalInfo();
+
+		VitalInfo latestVitalInfo = vitalInfos.get(vitalInfos.size()-1);
+
+		int bpm = latestVitalInfo.getBpm();
+		int sbp = latestVitalInfo.getSbp();
+		int dbp = latestVitalInfo.getDbp();
+		int bloodSugar = latestVitalInfo.getBloodSugar();
 		
+		
+		String status = "Safe";
+
+		//Safe 議곌굔 泥댄겕
+		if(bpm <= 80 && bloodSugar <= 120 && sbp <= 140 && dbp <= 90) {
+		status = "Safe";
+		}
+		//Emergency
+		else if(bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
+		 status = "Emergency"; 
+		patient.setIsNotified(false);
+		}
+		//Very_Dangerous\
+		else if((bpm > 100) && (countTrue(bloodSugar > 120, sbp > 140, dbp > 90) >=2) ||
+			   (bloodSugar > 120) && (countTrue(bpm > 100, sbp > 140, dbp > 90) >=2) ||
+			   (sbp > 140) && (countTrue(bpm > 100, bloodSugar > 120, dbp > 90) >=2) ||
+			   (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >=2)) {
+		status = "Very_Dangerous";
+		Patient.setIsNotified(false);
 	}
+		\
+		else if(countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
+			status = "Dangerous";
+			patient.setIsNotified(false);
+		}
+		\
+		else {
+			status = "Warning";
+			patient.setIsNotified(false);
+		
+			\
+			patient.setStatus(status);
+			if(!status.equals("Safe")) {
+			Patient.setIsNotified(false);
+		}
+	}
+
+	\
+	private int countTrue(boolean... conditions) {
+		int count = 0;
+		for (boolean condition : conditions) {
+			if (condition) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 	
 	
 	
