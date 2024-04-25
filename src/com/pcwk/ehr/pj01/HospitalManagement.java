@@ -1,4 +1,8 @@
 package com.pcwk.ehr.pj01;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.pcwk.ehr.cmn.PLog;
@@ -251,21 +255,107 @@ public class HospitalManagement<T> implements PLog{
 	
 	
 	public void hospitalReport() {
+		/*
+		 * 모든 환자에 대해서 환자의 이름과 현재 위험상태를 출력하고, 총 환자수, 각각 상태(Safe, Dangerous등)의 환자의 수, 의사에게
+		 * notify되지 않은 환자의 여부를 출력해주고, "현재시간+report.txt" 에 내용을 기록한다.
+		 * 
+		 */
+
+		FileWriter writer = null;
 		
-		//Iterator<T> iterator =this.patients.iterator();
-		//while(iterator.hasNext()) {
-			/*
-			 * 모든 환자에 대해서 환자의 이름과 현재 위험상태를 출력하고, 총 환자수, 각각 상태(Safe, Dangerous등)의 환자의 수,
-			 * 의사에게 notify되지 않은 환자의 여부를 출력해주고, "현재시간+report.txt" 에 내용을 기록한다.
-			 * 
-			 */
-		//}
+		try {
+			// report 이름에 들어갈 현재 시간 포맷
+	        LocalDateTime currentTime = LocalDateTime.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HH-mm");
+	        String formattedTime = formatter.format(currentTime);
+	        
+            // report.txt 파일을 쓰기 모드로 열기
+            String fileName = formattedTime + "report.txt";
+            writer = new FileWriter(fileName);
+		        
+			Iterator<T> iterator = this.patients.iterator();
+			int totalPatients = 0;
+			int[] statusCounts = new int[PatientStatus.values().length];
+			int notNotifiedCount = 0; // notify되지 않은 환자 수 세기 위한 변수
+			StringBuilder notNotifiedPatients = new StringBuilder();
+			 
+			while (iterator.hasNext()) {
+			
+				Patient patient = (Patient) iterator.next();
+				System.out.println("환자 이름 : " + patient.getName() + " , 위험 상태 : " + patient.getStatus());
+				totalPatients++;
+	
+				//각 상태별 환자 수 계산
+				switch (patient.getStatus()) {
+				case Safe:
+					statusCounts[PatientStatus.Safe.ordinal()]++;
+					break;
+				case Dangerous:
+					statusCounts[PatientStatus.Dangerous.ordinal()]++;
+					if (!patient.isNotified()) {
+	                        notNotifiedCount++;
+	                        notNotifiedPatients.append(patient.getName()).append(", ");
+	                    }
+					break;
+				case Very_Dangerous:
+					statusCounts[PatientStatus.Very_Dangerous.ordinal()]++;
+					if (!patient.isNotified()) {
+                        notNotifiedCount++;
+                        notNotifiedPatients.append(patient.getName()).append(", ");
+                    }
+					break;
+				}
+	
+			}
+			
+			System.out.println("--------------------------------");
+			System.out.println("총 환자 수 : " + totalPatients + "명");
+			System.out.println("--------------------------------");
+			writer.write("--------------------------------\n");
+	        writer.write("총 환자 수 : " + totalPatients + "명\n");
+	        writer.write("--------------------------------\n");
+	
+			// 환자 각각 상태에 따른 환자 수 출력
+			for (PatientStatus status : PatientStatus.values()) {
+				System.out.println(status + " 상태의 환자 수 : " + statusCounts[status.ordinal()] + "명");
+			    writer.write(status + " 상태의 환자 수 : " + statusCounts[status.ordinal()] + "명\n");
+			}
+	
+			
+			// notify되지 않은 환자 여부 출력
+	        if (notNotifiedCount > 0) {
+	            System.out.println("--------------------------------");
+	            System.out.println("의사에게 상태를 알리지 않은 위험한 환자 수 : " + notNotifiedCount + "명");
+	            System.out.println("의사에게 상태를 알리지 않은 환자 목록: " + notNotifiedPatients.toString());
+	            System.out.println("--------------------------------");
+	            writer.write("--------------------------------\n");
+	            writer.write("의사에게 상태를 알리지 않은 위험한 환자 수 : " + notNotifiedCount + "명\n");
+	            writer.write("의사에게 상태를 알리지 않은 환자 목록: " + notNotifiedPatients.toString() + "\n");
+	        } else {
+	            System.out.println("의사에게 상태를 알리지 않은 위험한 환자가 없습니다.");
+	        }
+			
+			writer.write("--------------------------------\n");
+			writer.write("파일 저장시간 : "+formattedTime);
+		
+			System.out.println("\n"+fileName+"파일에 저장되었습니다.");
+			
+		} catch (IOException e) {
+	        // IOException 처리
+	        LOG.debug("IOException:"+e.getMessage());
+	    } finally {
+	        try {
+	            // writer 닫기
+	            if (writer != null) {
+	                writer.close();
+	            }
+	        } catch (IOException e) {
+	            // IOException 처리
+	            LOG.debug("IOException:"+e.getMessage());
+	        }
+        }
 		
 	}
-	
-	
-	
-	
 	
 
 }
