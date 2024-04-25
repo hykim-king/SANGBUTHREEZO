@@ -133,9 +133,20 @@ public class HospitalManagement<T> implements PLog {
 	            System.out.println("환자정보 보관량이 최대치입니다. 더 이상 추가하실 수 없습니다.");
 	        }
 
-	        System.out.println("환자 정보를 입력해주세요:");
-	        System.out.print("이름 : ");
-	        String name = scanner.nextLine().trim();
+		 	System.out.println("환자 정보를 입력해주세요:");
+		 	// 이름 입력
+		 	String name;
+		 	while (true) {
+		        System.out.print("이름 : ");
+		        name = scanner.nextLine().trim();
+
+		        // 이름이 한글 또는 영어로만 구성되어 있는지 확인
+		        if (name.matches("[가-힣a-zA-Z]+")) {
+		            break; // 유효한 이름이면 반환
+		        } else {
+		            System.out.println("이름은 한글 또는 영어로만 입력해주세요.");
+		        }
+		    }
 	        // 성별 입력
 	        String gender;
 	        while (true) {
@@ -246,8 +257,18 @@ public class HospitalManagement<T> implements PLog {
 	        for (Patient patient : (List<Patient>) patients) {
 	            if (patient.getName().equalsIgnoreCase(searchName)) {
 	                System.out.println("환자 정보를 수정해주세요:");
-	                System.out.print("이름 : ");
-	                patient.setName(scanner.nextLine());
+	                // 이름 수정
+	    		 	while (true) {
+	    		        System.out.print("이름 : ");
+	    		        String name = scanner.nextLine().trim();
+	    		        // 이름이 한글 또는 영어로만 구성되어 있는지 확인
+	    		        if (name.matches("[가-힣a-zA-Z]+")) {
+	    		        	patient.setName(name);
+	    		            break; // 유효한 이름이면 반환
+	    		        } else {
+	    		            System.out.println("이름은 한글 또는 영어로만 입력해주세요.");
+	    		        }
+	    		    }
 	                // 성별 수정
 	                while (true) {
 	                    System.out.print("성별 (남자/여자) : ");
@@ -259,7 +280,7 @@ public class HospitalManagement<T> implements PLog {
 	                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
 	                    }
 	                }
-	             // 혈액형 입력
+	                // 혈액형 수정
 	                while (true) {
 	                    System.out.print("혈액형 (A/B/O/AB) : ");
 	                    String bloodType = scanner.nextLine().toUpperCase();
