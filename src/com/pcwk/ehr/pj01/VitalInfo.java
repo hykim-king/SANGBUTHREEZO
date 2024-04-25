@@ -76,7 +76,7 @@ public class VitalInfo {
 	}
 	
 	public String vitalToJson() {
-        return "{\"checkTime\":\"" + checkTime + "\",\"BPM\":\"" + BPM + "\",\"SBP\":\"" + SBP + "\",\"DBP\":" + DBP +
+        return "{\"checkTime\":\"" + checkTime + ",\"BPM\":" + BPM + ",\"SBP\":" + SBP + ",\"DBP\":" + DBP +
                 ",\"bloodSugar\":" + bloodSugar + ",\"}";
     }	
 	
@@ -86,9 +86,9 @@ public class VitalInfo {
             if (json.startsWith("{") && json.endsWith("}")) {
                 String[] parts = json.substring(1, json.length() - 1).split(",");
                 String checkTime = parts[0].split(":")[1].replace("\"", "").trim();
-                int BPM = Integer.parseInt(parts[1].split(":")[1].trim());
-                int SBP = Integer.parseInt(parts[2].split(":")[1].trim());
-                int DBP = Integer.parseInt(parts[3].split(":")[1].trim());
+                int BPM = Integer.parseInt(parts[1].split(":")[1].replace("\"", "").trim());
+                int SBP = Integer.parseInt(parts[2].split(":")[1].replace("\"", "").trim());
+                int DBP = Integer.parseInt(parts[3].split(":")[1].replace("\"", "").trim());
                 int BloodSugar = Integer.parseInt(parts[4].split(":")[1].trim());
                 return new VitalInfo(BPM,SBP,DBP,BloodSugar,checkTime);
             }

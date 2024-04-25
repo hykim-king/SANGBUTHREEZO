@@ -81,6 +81,23 @@ public class HospitalManagement<T> implements PLog {
     } // 환자 정보 불러오기
 	
     
+    void setAllVitals() {
+    	for(T patient : this.patients) {
+    		try(BufferedReader br = new BufferedReader(new FileReader(VITAL_FILE_DIRECTORY+((Patient) patient).getName()+".json"))){
+    			String line;
+    			   while ((line = br.readLine()) != null) {
+    	                VitalInfo info = VitalInfo.fromJson(line);
+    	                if (patient != null) {
+    	                    ((Patient)patient).vitalinfo.add(info);
+    	                }
+    	            }
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+ 	}
+ }
+       
+    
     
     
 	/*
@@ -106,6 +123,7 @@ public class HospitalManagement<T> implements PLog {
 	 */
 	public void initHospital() {
 		this.patients=(List<T>) getAllPatients();
+		this.setAllVitals();
 
 	}
 	
@@ -177,11 +195,13 @@ public class HospitalManagement<T> implements PLog {
 	        System.out.println("환자 정보가 저장되었습니다.");
 	} // 1. 환자 등록 끝
 
+	
 	// 환자정보 추가
 	   private void savePatientInformation(List<Patient> patientList, Patient patient) {
 	       patientList.add((Patient) patient); // 환자 정보를 patientList에 추가
 	   } // 환자정보 추가 완료	 
 	
+	   
 	// 환자 정보 최대치 도달
 	   private static boolean isFileLimitReached() {
 	        List<Patient> patients = getAllPatients();
