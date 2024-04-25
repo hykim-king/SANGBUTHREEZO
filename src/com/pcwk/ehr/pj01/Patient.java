@@ -17,6 +17,15 @@ public class Patient {
 	private boolean isNotified = true;
 	public PatientStatus status = PatientStatus.Safe;
 	
+	public ArrayList<VitalInfo> getVitalinfo() {
+		return vitalinfo;
+	}
+
+
+	public void setVitalinfo(ArrayList<VitalInfo> vitalinfo) {
+		this.vitalinfo = vitalinfo;
+	}
+
 	//환자의 바이탈 인포를 담는 리스트
 	public ArrayList<VitalInfo> vitalinfo=new ArrayList<VitalInfo>();
 	
@@ -113,7 +122,7 @@ public class Patient {
 		return isNotified;
 	}
 
-	public void setNotified(boolean isNotified) {
+	public void setIsNotified(boolean isNotified) {
 		this.isNotified = isNotified;
 	}
 

@@ -80,11 +80,17 @@ public class LoopThread extends Thread implements PLog {
 				case "4":
 					hospital.patientList();
 					break;
-				case "6":
+				case "5":
 					hospital.patientReport();
+					break;
+				case "6":
+					hospital.patientVitalReport();
 					break;
 				case "7":
 					hospital.hospitalReport();
+					break;
+				case "8":
+					hospital.evaluatePatientStatus();
 					break;
 
 				case "0":

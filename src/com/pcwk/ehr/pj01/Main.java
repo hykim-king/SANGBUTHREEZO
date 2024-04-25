@@ -39,7 +39,7 @@ public class Main implements PLog{
 		hospital.patients.get(1).status=PatientStatus.Dangerous;
 		hospital.patients.get(2).status=PatientStatus.Safe;
 		hospital.patients.get(3).status=PatientStatus.Very_Dangerous;
-		hospital.patients.get(3).setNotified(false);
+		hospital.patients.get(3).setIsNotified(false);
 		
 		
 		//th.start();
