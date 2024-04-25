@@ -128,9 +128,20 @@ public class Patient {
 	
 	@Override
 	public String toString() {
-		return "환자 정보 [이름=" + name + ", 성별=" + gender + ", 혈액형=" + bloodType + ", 생년월일=" + birthDay
-				+ ", 신장(cm)=" + height + ", 체중(Kg)=" + weight + ", 입원일 =" + registerdDate + ", 보고 여부="
-				+ isNotified + ", 건강 상태=" + status + ", 최근 심박수 =" + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +", 최근 혈당="+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +", 최근 수축기혈압="+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + ", 최근 이완기 혈압=" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp() + "]";
+		return "	- 환자 정보 -\n"
+				+ "	01. 이름=" + name + "\n"
+				+ "	02. 성별=" + gender + "\n"
+				+ "	03. 혈액형=" + bloodType + "\n"
+				+ "	04. 생년월일=" + birthDay + "\n"
+				+ "	05. 신장(cm)=" + height + "\n"
+				+ "	06. 체중(Kg)=" + weight + "\n"
+				+ "	07. 입원일 =" + registerdDate + "\n"
+				+ "	08. 보고 여부=" + isNotified + "\n"
+				+ "	09. 건강 상태=" + status + "\n"
+				+ "	10. 최근 심박수 =" + this.vitalinfo.get(this.vitalinfo.size()-1).getBpm() +"\n"
+				+ "	11. 최근 혈당="+this.vitalinfo.get(this.vitalinfo.size()-1).getBloodSugar() +"\n"
+				+ "	12. 최근 수축기혈압="+ this.vitalinfo.get(this.vitalinfo.size()-1).getSbp() + "\n"
+				+ "	13. 최근 이완기 혈압=" + this.vitalinfo.get(this.vitalinfo.size()-1).getDbp();
 	}
 
 	//환자를 등록할때 필수정보들은 다음과 같다.(Vital은 등록할때 받지 않아도 된다.)
