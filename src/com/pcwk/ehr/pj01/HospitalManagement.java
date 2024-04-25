@@ -94,11 +94,9 @@ public class HospitalManagement<T> implements PLog {
     	        } catch (IOException e) {
     	            e.printStackTrace();
     	        }
- 	}
- }
-       
-    
-    
+	 	}
+	 }
+	       
     
 	/*
 	 * 환자의 정보를 환자 "이름+등록일.txt" 파일로 기록. 정상적으로 저장 읽었을경우 0 리턴, 문제가생겼을경우 -1 리턴(Exception
@@ -106,8 +104,6 @@ public class HospitalManagement<T> implements PLog {
 	 * 
 	 * try catch 문으로 처리. LOG.debug(e.getMessage)를 통해 문제를 기록하도록함.
 	 */
-	
-
 
 	public VitalInfo readVitalInfoFile(String path) {
 		VitalInfo info = null;
@@ -124,12 +120,10 @@ public class HospitalManagement<T> implements PLog {
 	public void initHospital() {
 		this.patients=(List<T>) getAllPatients();
 		this.setAllVitals();
-
 	}
 	
 	public ArrayList<VitalInfo> getAllVitals(Patient patient) {
-		return patient.vitalinfo;
-		
+		return patient.vitalinfo;		
 	}
 
 	// 1. 환자 등록 시작
@@ -141,7 +135,7 @@ public class HospitalManagement<T> implements PLog {
 
 	        System.out.println("환자 정보를 입력해주세요:");
 	        System.out.print("이름 : ");
-	        String name = scanner.nextLine();
+	        String name = scanner.nextLine().trim();
 	        // 성별 입력
 	        String gender;
 	        while (true) {
@@ -245,7 +239,7 @@ public class HospitalManagement<T> implements PLog {
 		public void modifyPatient() {
 			System.out.println("수정할 환자의 이름을 입력하세요:");
 			Scanner scanner = new Scanner(System.in);
-	        String searchName = scanner.nextLine();
+	        String searchName = scanner.nextLine().trim();
 	        
 	        boolean found = false;
 
@@ -308,7 +302,7 @@ public class HospitalManagement<T> implements PLog {
 		public void deletePatient() {
 			 Scanner scanner = new Scanner(System.in);
 			 System.out.println("삭제할 환자의 이름을 입력하세요:");
-		        String searchName = scanner.nextLine();
+		        String searchName = scanner.nextLine().trim();
 
 		        boolean found = false;
 
@@ -326,8 +320,7 @@ public class HospitalManagement<T> implements PLog {
 		            System.out.println("일치하는 환자 정보가 없습니다.");
 		        } else {
 		            System.out.println("환자 정보가 삭제되었습니다.");
-		        }
-		        
+		        }		        
 		        // 아무 키나 입력할 때까지 대기
 		        System.out.println("계속하려면 아무 키나 입력하세요...");
 		        scanner.nextLine(); // 사용자 입력 대기
@@ -335,7 +328,6 @@ public class HospitalManagement<T> implements PLog {
 
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int vitalCheck() {
-
 		Scanner scanner = new Scanner(System.in);
 		Iterator<T> iterator = this.patients.iterator();
 		while (iterator.hasNext()) {
@@ -365,16 +357,20 @@ public class HospitalManagement<T> implements PLog {
 			 */
 		}
 		System.out.println("바이탈 체크를 완료하였습니다.\n\n");
+        System.out.println("계속하려면 아무 키나 입력하세요...");
+        scanner.nextLine(); // 사용자 입력 대기
 		return 0;
 	}
 
 	// 4. 환자 명단 확인
 	public void patientList() {
-
+		Scanner scanner = new Scanner(System.in);
 		int num = 0;
 		Iterator<T> iterator = this.patients.iterator();
 		if (iterator.hasNext() == false) {
 			System.out.println("환자 목록이 비었습니다.");
+	        System.out.println("계속하려면 아무 키나 입력하세요...");
+	        scanner.nextLine(); // 사용자 입력 대기
 		}
 		while (iterator.hasNext()) {
 
@@ -386,8 +382,8 @@ public class HospitalManagement<T> implements PLog {
 			 */
 		}
 		System.out.println("총 환자의 수는 " + num + "명입니다.");
-		System.out.println();
-		System.out.println();
+        System.out.println("계속하려면 아무 키나 입력하세요...");
+        scanner.nextLine(); // 사용자 입력 대기
 	} // 4. 환자 명단 확인 끝
 
 	// 환자 위험도 평가
@@ -513,7 +509,7 @@ public class HospitalManagement<T> implements PLog {
 				return;
 			}        
 		    System.out.print("검색할 환자의 이름을 입력하세요 (cancel 입력 시 메인 메뉴로 돌아갑니다): ");
-		    String searchName = scanner.nextLine();
+		    String searchName = scanner.nextLine().trim();
 		
 		    if (searchName.equalsIgnoreCase("cancel")) {
 		        return; // 메인 메뉴로 돌아감
@@ -539,11 +535,11 @@ public class HospitalManagement<T> implements PLog {
 		    }
 		} // 5. 개별 환자 정보 조회 끝
 
-	public void hospitalReport() {
+		// 7. 입원 환자 상태 보고서
+		public void hospitalReport() {
 		/*
-		 * 모든 환자에 대해서 환자의 이름과 현재 위험상태를 출력하고, 총 환자수, 각각 상태(Safe, Dangerous등)의 환자의 수, 의사에게
+		 * 모든 환자에 대해서 환자의 이름과 현재 위험상태를 출력하고, 총 환자수, 각각 상태(Safe, Dangerous등)의 환자의 수, 의사에게 알림
 		 * notify되지 않은 환자의 여부를 출력해주고, "현재시간+report.txt" 에 내용을 기록한다.
-		 * 
 		 */
 
 		FileWriter writer = null;
@@ -639,7 +635,7 @@ public class HospitalManagement<T> implements PLog {
 			}
 		}
 
-	} // hospitalReport 끝
+	} // // 7. 입원 환자 상태 보고서 끝
 	
     public static void savePatientListToJson(List<Patient> patientList) {
     	File jsonFile = new File(JSON_FILE);
@@ -690,7 +686,7 @@ public class HospitalManagement<T> implements PLog {
     		}catch (IOException e) {
     			e.printStackTrace();
     		}
-    	}
+    	} // for
         
     } // 환자 바이탈 정보들 JSON에 저장	
 
