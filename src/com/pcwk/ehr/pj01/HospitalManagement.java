@@ -229,6 +229,9 @@ public class HospitalManagement<T> implements PLog {
 					patient.setIsNotified(false);
 				}
 			}
+			if(!patient.isNotified()) {
+				notifyToDoctor(patient);
+			}
 		}
 		return 0;
 	}//evaulate 끝
@@ -243,14 +246,16 @@ public class HospitalManagement<T> implements PLog {
 		return count;
 	}
 
-	public void notifyToDoctor() {
+	public void notifyToDoctor(Patient p) {
+		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("의사를 호출 하시겠습니까? (Y/N)");
 		String decision = scanner.nextLine().trim().toUpperCase();
 		if(decision.equals("Y")) {
-			notifyToDoctor();
+			p.setIsNotified(true);
+			System.out.println("의사에게 알림을 보냈습니다.");
 		}
-		System.out.println("의사에게 알림을 보냈습니다.");
+		scanner.close();
 	}
     
 	
