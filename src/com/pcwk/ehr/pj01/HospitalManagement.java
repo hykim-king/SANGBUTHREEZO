@@ -410,64 +410,44 @@ public class HospitalManagement<T> implements PLog {
 	// 8. 환자 위험도 평가 실행
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
-		Scanner scanner = new Scanner(System.in);
-		Iterator<T> iterator = this.patients.iterator();
-		while (iterator.hasNext()) {
-			Patient patient = (Patient) iterator.next();
-			List<VitalInfo> vitalInfos = patient.getVitalinfo();
-
-			VitalInfo latestVitalInfo = vitalInfos.get(vitalInfos.size() - 1);
-
-			int bpm = latestVitalInfo.getBpm();
-			int sbp = latestVitalInfo.getSbp();
-			int dbp = latestVitalInfo.getDbp();
-			int bloodSugar = latestVitalInfo.getBloodSugar();
-			PatientStatus status=PatientStatus.Safe;
-	        System.out.println(patient.getName()+"맥박"+bpm);
-	        System.out.println(patient.getName()+"sbp"+sbp);
-	        System.out.println(patient.getName()+"dbp"+dbp);
-	        System.out.println(patient.getName()+"혈당"+bloodSugar);
-			
-			
-			// Safe
-			if (bpm <= 80 && bloodSugar <= 120 && sbp <= 120 && dbp <= 80) {
-				 status = PatientStatus.Safe;
-			}
-			// Dangerous(2개 이상 포함)
-			else if( (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90)
-					||(bpm > 80 || dbp > 90 || bloodSugar > 120 || sbp > 140) ) {
-				status =PatientStatus.Dangerous;
-				patient.setIsNotified(false);
-			}
-			// Very_Dangerous(최소 3개이상 조건 충족)
-			else if ((bpm > 100) && (countTrue(bloodSugar > 120, sbp > 140, dbp > 90) >= 3)
-					|| (bloodSugar > 120) && (countTrue(bpm > 100, sbp > 140, dbp > 90) >= 3)
-					|| (sbp > 140) && (countTrue(bpm > 100, bloodSugar > 120, dbp > 90) >= 3)
-					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 3)
-					|| (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90)) {
-				status = PatientStatus.Very_Dangerous;
-				patient.setIsNotified(false);
-			}
-
-			else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
-				status =PatientStatus.Dangerous;
-				patient.setIsNotified(false);
-			}
-
-			else {
-				status =PatientStatus.Dangerous;
-				patient.setIsNotified(false);
-
-				patient.setStatus(status);
-				if (status!=PatientStatus.Safe) {
-					patient.setIsNotified(false);
-				}
-			}
-		} // while
-		System.out.println("계속하려면 아무 키나 입력하세요...");
-		scanner.nextLine(); // 사용자 입력 대기
-		return 0;
-	}// 8. 환자 위험도 평가 실행 끝
+		   Scanner scanner = new Scanner(System.in);
+		   Iterator<T> iterator = this.patients.iterator();
+		   while (iterator.hasNext()) {
+		       Patient patient = (Patient) iterator.next();
+		       List<VitalInfo> vitalInfos = patient.getVitalinfo();
+		       VitalInfo latestVitalInfo = vitalInfos.get(vitalInfos.size() - 1);
+		       int bpm = latestVitalInfo.getBpm();
+		       int sbp = latestVitalInfo.getSbp();
+		       int dbp = latestVitalInfo.getDbp();
+		       int bloodSugar = latestVitalInfo.getBloodSugar();
+		       PatientStatus status = PatientStatus.Safe;
+		       System.out.println(patient.getName() + "맥박" + bpm);
+		       System.out.println(patient.getName() + "sbp" + sbp);
+		       System.out.println(patient.getName() + "dbp" + dbp);
+		       System.out.println(patient.getName() + "혈당" + bloodSugar);
+		       // Safe
+		       if (bpm <= 80 && sbp <= 140 && dbp <= 90 && bloodSugar <= 120) {
+		           status = PatientStatus.Safe;
+		       }
+		       // Dangerous (1개 이상 초과)
+		       else if (bpm > 80 || sbp > 140 || dbp > 90 || bloodSugar > 120) {
+		           status = PatientStatus.Dangerous;
+		           patient.setIsNotified(false);
+		       }
+		       // Very_Dangerous (3개 이상 초과)
+		       else if (countTrue(bpm > 80, sbp > 140, dbp > 90, bloodSugar > 120) >= 3) {
+		           status = PatientStatus.Very_Dangerous;
+		           patient.setIsNotified(false);
+		       }
+		       patient.setStatus(status);
+		       if (status != PatientStatus.Safe) {
+		           patient.setIsNotified(false);
+		       }
+		   }
+		   System.out.println("계속하려면 아무 키나 입력하세요...");
+		   scanner.nextLine(); // 사용자 입력 대기
+		   return 0;
+		}// 8. 환자 위험도 평가 실행 끝
 
 	private int countTrue(boolean... conditions) {
 		int count = 0;
