@@ -113,6 +113,7 @@ public class LoopThread extends Thread implements PLog {
 				 HospitalManagement.saveVitalListToJson(hospital.patients);
 				 System.exit(0);
 				default:
+					can.interrupt();
 					System.out.println("잘못된 선택입니다. 0 ~ 9의 숫자를 입력해주세요.");
 				}
 			}else {
