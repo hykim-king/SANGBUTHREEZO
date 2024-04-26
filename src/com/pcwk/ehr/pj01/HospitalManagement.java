@@ -410,7 +410,7 @@ public class HospitalManagement<T> implements PLog {
 	// 환자 위험도 평가
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
-		Iterator<T> iterator = this.patients.iterator();
+			Iterator<T> iterator = this.patients.iterator();
 		while (iterator.hasNext()) {
 			Patient patient = (Patient) iterator.next();
 			List<VitalInfo> vitalInfos = patient.getVitalinfo();
@@ -422,35 +422,53 @@ public class HospitalManagement<T> implements PLog {
 			int dbp = latestVitalInfo.getDbp();
 			int bloodSugar = latestVitalInfo.getBloodSugar();
 			PatientStatus status=PatientStatus.Safe;
-	
+	        System.out.println(patient.getName()+"맥박"+bpm);
+	        System.out.println(patient.getName()+"sbp"+sbp);
+	        System.out.println(patient.getName()+"dbp"+dbp);
+	        System.out.println(patient.getName()+"혈당"+bloodSugar);
+			
+			
 			// Safe
-			if (bpm <= 80 && bloodSugar <= 120 && sbp <= 140 && dbp <= 90) {
-				status = PatientStatus.Safe;
-				patient.setIsNotified(true);
+			if (bpm <= 80 && bloodSugar <= 120 && sbp <= 120 && dbp <= 80) {
+				 status = PatientStatus.Safe;
 			}
-			// Dangerous
-			else if (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
-				status =PatientStatus.Very_Dangerous;
+			// Warning(조건중 1개 포함)
+			if(bpm > 80 || dbp > 90 || bloodSugar > 120 || sbp > 140) {
+				status = patientStatus.Warning;
 				patient.setIsNotified(false);
 			}
-			// Very_Dangerous\
-			else if ((bpm > 100) && (countTrue(bloodSugar > 120, sbp > 140, dbp > 90) >= 2)
-					|| (bloodSugar > 120) && (countTrue(bpm > 100, sbp > 140, dbp > 90) >= 2)
-					|| (sbp > 140) && (countTrue(bpm > 100, bloodSugar > 120, dbp > 90) >= 2)
-					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 2)) {
+			// Dangerous(2개 이상 포함)
+			else if (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
+				status =PatientStatus.Dangerous;
+				patient.setIsNotified(false);
+			}
+			// Very_Dangerous(최소 3개이상 조건 충족)
+			else if ((bpm > 100) && (countTrue(bloodSugar > 120, sbp > 140, dbp > 90) >= 3)
+					|| (bloodSugar > 120) && (countTrue(bpm > 100, sbp > 140, dbp > 90) >= 3)
+					|| (sbp > 140) && (countTrue(bpm > 100, bloodSugar > 120, dbp > 90) >= 3)
+					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 3)) {
 				status = PatientStatus.Very_Dangerous;
 				patient.setIsNotified(false);
-			}else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
-				status =PatientStatus.Dangerous;
-				patient.setIsNotified(false);
-			}else {
-				status =PatientStatus.Dangerous;
-				patient.setIsNotified(false);
-				
+			// emergency (모두 포함시)
+				if(bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
+					status = patientStatus.emergency;
+					patient.setIsNotified(false);
+				}
 			}
-			patient.setStatus(status);
-			if(!patient.isNotified()) {
-				notifyToDoctor(patient);
+
+			else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
+				status =PatientStatus.Dangerous;
+				patient.setIsNotified(false);
+			}
+
+			else {
+				status =PatientStatus.Dangerous;
+				patient.setIsNotified(false);
+
+				patient.setStatus(status);
+				if (status!=PatientStatus.Safe) {
+					patient.setIsNotified(false);
+				}
 			}
 		}
 		return 0;
