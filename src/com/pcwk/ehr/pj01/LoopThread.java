@@ -16,12 +16,13 @@ public class LoopThread extends Thread implements PLog {
 	}
     
 	public static void printMenu() {
-
-		System.out.println("\n───────────────────────────────────────────");
-		System.out.println("메뉴를 선택하세요.(0번 입력시 프로그램 종료)");
-		System.out.println("1.환자 등록, 2.환자 정보 변경, 3.환자 삭제, 4.환자명단 확인, ");
-		System.out.println("5.개별 환자정보 조회, 6.개별 환자 바이탈 이력 조회, 7.입원 환자 상태 보고서, 8.환자 위험도 평가 실행");
-		System.out.println("───────────────────────────────────────────");
+		System.out.println();
+		System.out.println("			* 승준 병원에 오신 여러분 환영합니다. 어서 빨리 입원하세요 *");
+		System.out.println("┌────────────────────────────────────────────────┐");
+		System.out.println("│메뉴를 선택하세요.(0번 입력시 프로그램 종료)								      │");
+		System.out.println("│1.환자 등록, 2.환자 정보 변경, 3.환자 삭제, 4.환자명단 확인,					      │");
+		System.out.println("│5.개별 환자정보 조회, 6.개별 환자 바이탈 이력 조회, 7.입원 환자 상태 보고서, 8.환자 위험도 평가 실행│");
+		System.out.println("└────────────────────────────────────────────────┘");
 		System.out.print("입력:");
 	}
 
