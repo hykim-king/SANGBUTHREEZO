@@ -11,7 +11,6 @@ public class CancelThread extends Thread {
              // cancelableScanner 의 입력 받기를 취소함
              cancelableScanner.cancel();
          } catch (Exception e) {
-             System.out.println("cancelThread 스레드 중단(interrupted) : " +  e);
          }
      }
 	public CancelThread(CancelableScanner cancelableScanner) {

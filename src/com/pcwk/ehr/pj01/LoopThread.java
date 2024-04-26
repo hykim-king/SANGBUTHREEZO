@@ -64,33 +64,40 @@ public class LoopThread extends Thread implements PLog {
 			} catch (Exception e) {
 				answer="cancel";
 			}
-			can.interrupt();
 			if (!answer.equals("cancel")) {
 				switch (answer) {
 
 				case "1":
+					can.interrupt();
 					hospital.registerPatient(); // 1. 환자 등록
 					hospital.evaluatePatientStatus();
 					break;
 				case "2":
+					can.interrupt();
 					hospital.modifyPatient(); // 2. 환자 정보 변경
 					break;
 				case "3":
+					can.interrupt();
 					hospital.deletePatient(); // 3. 환자 삭제
 					break;
 				case "4":
+					can.interrupt();
 					hospital.patientList(); // 4. 환자 명단 확인
 					break;
 				case "5":
+					can.interrupt();
 					hospital.patientReport(); // 5. 개별 환자 정보 조회
 					break;
 				case "6":
+					can.interrupt();
 					hospital.patientVitalReport(); // 6. 개별 환자 바이탈 이력 조회
 					break;
 				case "7":
+					can.interrupt();
 					hospital.hospitalReport(); // 7. 입원 환자 상태 보고서
 					break;
 				case "8":
+					can.interrupt();
 					hospital.evaluatePatientStatus(); // 8. 환자 위험도 평가 실행
 					break;
 				case "9":
@@ -110,6 +117,7 @@ public class LoopThread extends Thread implements PLog {
 			}else {
 				continue;
 			}
+			
 		} // while
 
 	} // run
