@@ -70,6 +70,7 @@ public class LoopThread extends Thread implements PLog {
 
 				case "1":
 					hospital.registerPatient(); // 1. 환자 등록
+					hospital.evaluatePatientStatus();
 					break;
 				case "2":
 					hospital.modifyPatient(); // 2. 환자 정보 변경
