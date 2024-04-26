@@ -407,9 +407,10 @@ public class HospitalManagement<T> implements PLog {
         scanner.nextLine(); // 사용자 입력 대기
 	} // 4. 환자 명단 확인 끝
 
-	// 환자 위험도 평가
+	// 8. 환자 위험도 평가 실행
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
+		Scanner scanner = new Scanner(System.in);
 		Iterator<T> iterator = this.patients.iterator();
 		while (iterator.hasNext()) {
 			Patient patient = (Patient) iterator.next();
@@ -470,9 +471,11 @@ public class HospitalManagement<T> implements PLog {
 					patient.setIsNotified(false);
 				}
 			}
-		}
+		} // while
+		System.out.println("계속하려면 아무 키나 입력하세요...");
+		scanner.nextLine(); // 사용자 입력 대기
 		return 0;
-	}//evaulate 끝
+	}// 8. 환자 위험도 평가 실행 끝
 
 	private int countTrue(boolean... conditions) {
 		int count = 0;
