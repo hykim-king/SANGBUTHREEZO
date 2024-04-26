@@ -64,7 +64,7 @@ public class LoopThread extends Thread implements PLog {
 			} catch (Exception e) {
 				answer="cancel";
 			}
-			
+			can.interrupt();
 			if (!answer.equals("cancel")) {
 				switch (answer) {
 
