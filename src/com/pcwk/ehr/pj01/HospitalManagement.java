@@ -433,13 +433,9 @@ public class HospitalManagement<T> implements PLog {
 			if (bpm <= 80 && bloodSugar <= 120 && sbp <= 120 && dbp <= 80) {
 				 status = PatientStatus.Safe;
 			}
-			// Warning(조건중 1개 포함)
-			if(bpm > 80 || dbp > 90 || bloodSugar > 120 || sbp > 140) {
-				status = PatientStatus.Warning;
-				patient.setIsNotified(false);
-			}
 			// Dangerous(2개 이상 포함)
-			else if (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
+			else if( (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90)
+					||(bpm > 80 || dbp > 90 || bloodSugar > 120 || sbp > 140) ) {
 				status =PatientStatus.Dangerous;
 				patient.setIsNotified(false);
 			}
@@ -447,14 +443,10 @@ public class HospitalManagement<T> implements PLog {
 			else if ((bpm > 100) && (countTrue(bloodSugar > 120, sbp > 140, dbp > 90) >= 3)
 					|| (bloodSugar > 120) && (countTrue(bpm > 100, sbp > 140, dbp > 90) >= 3)
 					|| (sbp > 140) && (countTrue(bpm > 100, bloodSugar > 120, dbp > 90) >= 3)
-					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 3)) {
+					|| (dbp > 90) && (countTrue(bpm > 100, bloodSugar > 120, sbp > 140) >= 3)
+					|| (bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90)) {
 				status = PatientStatus.Very_Dangerous;
 				patient.setIsNotified(false);
-			// emergency (모두 포함시)
-				if(bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
-					status = PatientStatus.Emergency;
-					patient.setIsNotified(false);
-				}
 			}
 
 			else if (countTrue(bpm > 80, bloodSugar > 120, sbp > 140, dbp > 90) >= 2) {
