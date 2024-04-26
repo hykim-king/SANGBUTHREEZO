@@ -410,7 +410,7 @@ public class HospitalManagement<T> implements PLog {
 	// 환자 위험도 평가
 	// 정상 종료시 0 리턴 문제가 발생시 -1 리턴
 	public int evaluatePatientStatus() {
-			Iterator<T> iterator = this.patients.iterator();
+		Iterator<T> iterator = this.patients.iterator();
 		while (iterator.hasNext()) {
 			Patient patient = (Patient) iterator.next();
 			List<VitalInfo> vitalInfos = patient.getVitalinfo();
@@ -434,7 +434,7 @@ public class HospitalManagement<T> implements PLog {
 			}
 			// Warning(조건중 1개 포함)
 			if(bpm > 80 || dbp > 90 || bloodSugar > 120 || sbp > 140) {
-				status = patientStatus.Warning;
+				status = PatientStatus.Warning;
 				patient.setIsNotified(false);
 			}
 			// Dangerous(2개 이상 포함)
@@ -451,7 +451,7 @@ public class HospitalManagement<T> implements PLog {
 				patient.setIsNotified(false);
 			// emergency (모두 포함시)
 				if(bpm > 100 && bloodSugar > 150 && sbp > 140 && dbp > 90) {
-					status = patientStatus.emergency;
+					status = PatientStatus.Emergency;
 					patient.setIsNotified(false);
 				}
 			}
@@ -483,6 +483,7 @@ public class HospitalManagement<T> implements PLog {
 		}
 		return count;
 	}
+
 
 	public void notifyToDoctor(Patient p) {
 		
