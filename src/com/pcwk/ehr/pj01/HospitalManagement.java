@@ -461,13 +461,24 @@ public class HospitalManagement<T> implements PLog {
 
 
 	public void notifyToDoctor(Patient p) {
-		
+
 		Scanner scan = new Scanner(System.in);
-		System.out.println(p.getName()+"환자의 상태가"+p.getStatus().toString()+"입니다. 의사를 호출 하시겠습니까? (Y/N)");
-		String decision = scan.nextLine().trim().toUpperCase();
-		if(decision.equals("Y")) {
-			p.setIsNotified(true);
-			System.out.println("의사에게 알림을 보냈습니다.");
+		boolean validInput = false;
+		System.out.println(p.getName() + "환자의 상태가" + p.getStatus().toString() + "입니다. 의사를 호출 하시겠습니까? (Y/N)");
+
+		while (!validInput) {
+
+			String decision = scan.nextLine().trim().toUpperCase();
+			if (decision.equals("Y")) {
+				p.setIsNotified(true);
+				System.out.println("의사에게 알림을 보냈습니다.");
+				validInput = true;
+			} else if (decision.equals("N")) {
+				System.out.println("의사를 호출하지 않겠습니다.");
+				validInput = true;
+			} else {
+				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+			}
 		}
 	}
     
