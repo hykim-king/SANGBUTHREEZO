@@ -50,7 +50,6 @@ public class CancelableScanner {
     }
 
     public void cancel(){
-    	System.out.println("\n20초간 입력이 없어 재시작합니다.");
         futureTask.cancel(true);
     }
 }
